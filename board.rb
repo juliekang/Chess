@@ -119,8 +119,9 @@ end
 
 b = Board.new
 b.display
-b.grid[1][4].set_piece(:pawn)
-b.grid[2][4].set_piece(:pawn)
+b.grid[4][4].set_piece(:queen)
+#b.grid[2][4].set_piece(:pawn)
 b.display
-p b.grid[1][4].piece.moveset
-p b.grid[1][4].piece.moveset.length
+p b.grid[4][4].piece.find_path([0,4])
+#p b.grid[1][4].piece.moveset.length
+

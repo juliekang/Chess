@@ -36,7 +36,6 @@ class Pawn < Piece
         self.moveset << [y + 1, x]
       end
     end
-    whittle
   end
 
 end

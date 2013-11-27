@@ -8,25 +8,46 @@ class SlidingPiece < Piece
     @directions = []
   end
 
-  def define_moveset
-    x = self.position[1]
-    y = self.position[0]
+  def find_path(stop_coordinate)
+    start_x = self.position[1]
+    start_y = self.position[0]
 
-    for i in 1..7
-      if self.directions.include?(:vertical_horizontal)
-        self.moveset << [y + i, x]
-        self.moveset << [y - i, x]
-        self.moveset << [y, x + i]
-        self.moveset << [y, x - i]
+    stop_x = stop_coordinate[1]
+    stop_y = stop_coordinate[0]
+
+    dx = stop_x - start_x
+    dy = stop_y - start_y
+
+    p "dx = #{dx} dy = #{dy}"
+
+    path = []
+
+    if dx.abs == dy.abs
+      # Diagonal
+      raise "Illegal move " unless self.directions.include?(:diagonal)
+      for i in 0..dy
+        for j in 0..dx #NOTE TO SELF - REMOVE START
+          path << [start_y + i, start_x + j] if i.abs == j.abs
+        end
       end
-      if self.directions.include?(:diagonal)
-        self.moveset << [y + i, x + i]
-        self.moveset << [y - i, x - i]
-        self.moveset << [y - i, x + i]
-        self.moveset << [y + i, x - i]
+    else
+      raise "Illegal move " unless self.directions.include?(:vertical_horizontal)
+      if dx == 0 && dy.abs > 1 # Vertical
+        for i in 0..dy
+          p "start_y = #{start_y} i = #{i}"
+          path << [start_y + i, start_x]
+        end
+      elsif dy == 0 && dx.abs > 1 # Horizontal
+        for i in 0..dx
+          p "start_x = #{start_x} i = #{i}"
+
+          path << [start_y, start_x + i]
+        end
+      else # ?????
+        puts "You're dumb and you should feel bad."
       end
     end
-    whittle
+    return path
   end
 
 end
@@ -36,7 +57,6 @@ class Queen < SlidingPiece
   def initialize(position)
     super(position)
     @directions = [:diagonal, :vertical_horizontal]
-    define_moveset
   end
 
   def to_s
@@ -50,7 +70,6 @@ class Bishop < SlidingPiece
   def initialize(position)
     super(position)
     @directions = [:diagonal]
-    define_moveset
   end
 
   def to_s
@@ -64,7 +83,6 @@ class Rook < SlidingPiece
   def initialize(position)
     super(position)
     @directions = [:vertical_horizontal]
-    define_moveset
   end
 
   def to_s

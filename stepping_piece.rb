@@ -12,7 +12,6 @@ class Knight < Stepping_Piece
 
   def initialize(position)
     super(position)
-    define_moveset
   end
 
   def to_s
@@ -30,7 +29,6 @@ class Knight < Stepping_Piece
         self.moveset << [y + i, x + j]
       end
     end
-    whittle
   end
 
 end
@@ -39,7 +37,6 @@ class King < Stepping_Piece
 
   def initialize(position)
     super(position)
-    define_moveset
   end
 
   def to_s
@@ -58,7 +55,6 @@ class King < Stepping_Piece
       self.moveset << [y + i, x + i]
       self.moveset << [y - i, x + i]
     end
-    whittle
   end
 
 end
